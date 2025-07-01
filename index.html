@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑白30Hz闪烁效果</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>黑白30Hz闪烁效果演示</h1>
+        <p>当前页面正在以30赫兹频率进行黑白闪烁</p>
+        <p>⚠️ 注意：长时间观看可能引起不适，建议观看不超过10秒</p>
+        <p>若感觉不适，请立即关闭本页面</p>
+    </div>
+
+    <script>
+        // 30赫兹 = 1000毫秒 / 30 ≈ 33.33毫秒切换一次
+        const flashInterval = 1000 / 30;
+        let isBlack = true;
+        const body = document.body;
+        
+        // 设置闪烁效果
+        const flash = () => {
+            body.style.backgroundColor = isBlack ? '#000' : '#fff';
+            isBlack = !isBlack;
+            requestAnimationFrame(flash);
+        };
+        
+        // 启动闪烁
+        flash();
+    </script>
+</body>
+</html>
