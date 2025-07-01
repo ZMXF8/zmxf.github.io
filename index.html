@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>无限黑白闪烁演示</title>
+    <title>高频黑白闪烁演示（0.01秒）</title>
     <style>
         body {
             margin: 0;
@@ -11,89 +11,116 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            font-family: "PingFang SC", sans-serif;
-            transition: background-color 0.05s; /* 轻微过渡减少生硬感 */
+            font-family: "Microsoft YaHei", sans-serif;
         }
         
-        .control-panel {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background: rgba(0,0,0,0.7);
-            padding: 15px 25px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .stop-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .stop-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-        
-        .warning-bar {
+        .emergency-warning {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 51, 51, 0.9);
+            background: rgba(255, 0, 0, 0.9);
             color: white;
-            padding: 10px 0;
+            padding: 12px 0;
             text-align: center;
-            font-size: 14px;
-            z-index: 100;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
         
-        .info-box {
+        .control-center {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+        
+        .kill-switch {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.5);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .kill-switch:hover {
+            background: #c0392b;
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 8px 20px rgba(192, 57, 43, 0.6);
+        }
+        
+        .kill-switch:active {
+            transform: translateX(-50%) translateY(1px);
+            box-shadow: 0 3px 10px rgba(192, 57, 43, 0.4);
+        }
+        
+        .info-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             color: white;
             padding: 20px 30px;
             border-radius: 10px;
             text-align: center;
-            z-index: 100;
+            z-index: 1000;
+            max-width: 80%;
+        }
+        
+        .freq-indicator {
+            font-size: 24px;
+            color: #f1c40f;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <!-- 顶部警告条 -->
-    <div class="warning-bar">
-        ⚠️ 警告：无限闪烁可能引起视觉疲劳，若出现不适请立即点击下方按钮停止！
+    <!-- 紧急警告条 -->
+    <div class="emergency-warning">
+        ⚠️ 高危警告：0.01秒高频闪烁可能引发严重不适，建议立即点击下方按钮停止！
     </div>
     
-    <!-- 中央信息框 -->
-    <div class="info-box">
-        <h2 style="font-size: 20px; margin-bottom: 10px;">无限黑白闪烁演示</h2>
-        <p>当前频率：0.5秒切换一次（1Hz）</p>
-        <p>⚠️ 注意：请控制观看时间，避免长时间注视</p>
+    <!-- 信息覆盖层 -->
+    <div class="info-overlay">
+        <h2 style="font-size: 20px; margin-bottom: 5px;">高频黑白闪烁演示</h2>
+        <div class="freq-indicator">当前频率：100次/秒（0.01秒切换一次）</div>
+        <p>⚠️ 重要提示：</p>
+        <p>1. 高频闪烁可能导致头晕、恶心甚至光敏性反应</p>
+        <p>2. 请在10秒内停止观看，避免视觉损伤</p>
+        <p>3. 若出现不适，请立即关闭浏览器</p>
     </div>
     
-    <!-- 控制按钮 -->
-    <div class="control-panel">
-        <button class="stop-btn" id="stopBtn">停止闪烁</button>
+    <!-- 紧急停止按钮 -->
+    <div class="control-center">
+        <button class="kill-switch" id="stopBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 16L8 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 16L16 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            紧急停止
+        </button>
     </div>
 
     <script>
-        const flashInterval = 500; // 0.5秒切换一次
+        // 0.01秒切换一次（10毫秒）
+        const flashInterval = 10; // 10毫秒 = 0.01秒
         let isBlack = true;
         const body = document.body;
         const stopBtn = document.getElementById('stopBtn');
         let flashTimerId;
+        let autoStopCountdown = 10; // 10秒后自动停止
         
         // 启动闪烁
         function startFlashing() {
@@ -105,17 +132,30 @@
         // 停止闪烁
         function stopFlashing() {
             clearTimeout(flashTimerId);
-            body.style.backgroundColor = '#f5f5f5'; // 恢复浅灰色背景
-            stopBtn.innerHTML = '已停止';
+            body.style.backgroundColor = '#f8f9fa'; // 恢复为浅色背景
+            stopBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#95a5a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 16L8 8" stroke="#95a5a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 16L16 8" stroke="#95a5a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> 已停止';
             stopBtn.disabled = true;
-            stopBtn.style.backgroundColor = '#95a5a6';
+            stopBtn.style.backgroundColor = '#7f8c8d';
+            stopBtn.style.boxShadow = '0 3px 10px rgba(127, 140, 141, 0.4)';
         }
         
-        // 按钮事件
+        // 自动停止倒计时
+        function startAutoStop() {
+            const autoStopInterval = setInterval(() => {
+                autoStopCountdown--;
+                if (autoStopCountdown <= 0) {
+                    clearInterval(autoStopInterval);
+                    stopFlashing();
+                }
+            }, 1000);
+        }
+        
+        // 按钮事件 - 优先级高于自动停止
         stopBtn.addEventListener('click', stopFlashing);
         
-        // 初始启动闪烁
+        // 初始启动闪烁和自动停止计时
         startFlashing();
+        startAutoStop();
     </script>
 </body>
 </html>
