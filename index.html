@@ -3,158 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高强度彩色闪烁测试（25Hz）</title>
+    <title>闪烁测试 - 安全确认</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
-            font-family: "Microsoft YaHei", sans-serif;
-            transition: background-color 0ms; /* 移除过渡，确保硬切换 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "PingFang SC", sans-serif;
+            background-color: #f9f9f9;
         }
         
-        .high-intensity-warning {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+        .warning-card {
+            background: white;
+            border-radius: 12px;
+            max-width: 90%;
+            width: 450px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: #e74c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .warning-text {
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        
+        .test-type-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .btn-color {
             background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff);
             color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(255,0,0,0.5);
         }
         
-        .control-center {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
+        .btn-color:hover {
+            opacity: 0.9;
         }
         
-        .emergency-stop {
-            background: white;
-            color: #e74c3c;
-            border: 3px solid #e74c3c;
-            padding: 18px 50px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.3), 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-        }
-        
-        .emergency-stop:hover {
-            background: #f8f9fa;
-            transform: translateX(-50%) translateY(-3px);
-        }
-        
-        .emergency-stop:active {
-            transform: translateX(-50%) translateY(1px);
-        }
-        
-        .test-info {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.8);
+        .btn-bw {
+            background: #333;
             color: white;
-            padding: 25px 35px;
-            border-radius: 12px;
-            text-align: center;
-            z-index: 1000;
-            max-width: 80%;
         }
         
-        .color-indicator {
-            font-size: 30px;
-            color: #f1c40f;
-            margin: 15px 0;
+        .btn-bw:hover {
+            background: #1a1a1a;
         }
         
-        .rgb-values {
-            font-size: 14px;
-            color: #95a5a6;
-            margin-top: 5px;
+        .btn-deny {
+            background: #ecf0f1;
+            color: #333;
+            margin-top: 15px;
+        }
+        
+        .btn-deny:hover {
+            background: #dfe6e9;
         }
     </style>
 </head>
 <body>
-    <!-- 高强度警告条 -->
-    <div class="high-intensity-warning">
-        ⚠️ 高危彩色闪烁测试：红/绿/蓝快速切换，立即点击按钮停止！
-    </div>
-    
-    <!-- 测试信息框 -->
-    <div class="test-info">
-        <h2 style="font-size: 22px; margin-bottom: 5px;">高强度彩色闪烁测试</h2>
-        <div class="color-indicator" id="colorDisplay">当前颜色：红色</div>
-        <div class="rgb-values" id="rgbDisplay">RGB: 255, 0, 0</div>
-        <p>⚠️ 重要警告：</p>
-        <p>1. 彩色闪烁可能诱发严重光敏反应，严禁癫痫患者使用</p>
-        <p>2. 建议观看不超过3秒，立即停止！</p>
-    </div>
-    
-    <!-- 紧急停止按钮 -->
-    <div class="control-center">
-        <button class="emergency-stop" id="stopBtn">
-            紧急停止
-        </button>
+    <div class="warning-card">
+        <div class="card-header">⚠️ 无限闪烁测试警告</div>
+        <div class="card-body">
+            <p class="warning-text">
+                您即将进行无限闪烁测试，请注意：<br><br>
+                ▪ 无限闪烁可能诱发严重光敏反应或视觉疲劳<br>
+                ▪ 癫痫患者、心脏病患者及孕妇严禁测试<br>
+                ▪ 测试过程中若感不适，请立即点击停止按钮<br><br>
+                请确保您已了解全部风险，并在安全环境下操作。
+            </p>
+            <div class="test-type-buttons">
+                <button class="btn btn-color" id="colorTestBtn">彩色（红、绿、蓝）无限测试</button>
+                <button class="btn btn-bw" id="blackWhiteTestBtn">黑白无限测试</button>
+            </div>
+            <button class="btn btn-deny" id="denyBtn">不允许，退出</button>
+        </div>
     </div>
 
     <script>
-        // 40毫秒切换一次（25Hz）
-        const flashInterval = 40; 
-        // 标准色卡RGB值
-        const colors = [
-            { name: "红色", rgb: "255, 0, 0", hex: "#ff0000" },
-            { name: "绿色", rgb: "0, 255, 0", hex: "#00ff00" },
-            { name: "蓝色", rgb: "0, 0, 255", hex: "#0000ff" }
-        ];
-        let colorIndex = 0;
-        const body = document.body;
-        const colorDisplay = document.getElementById('colorDisplay');
-        const rgbDisplay = document.getElementById('rgbDisplay');
-        const stopBtn = document.getElementById('stopBtn');
-        let flashTimerId;
+        const colorTestBtn = document.getElementById('colorTestBtn');
+        const blackWhiteTestBtn = document.getElementById('blackWhiteTestBtn');
+        const denyBtn = document.getElementById('denyBtn');
         
-        // 启动彩色闪烁
-        function startFlashing() {
-            const currentColor = colors[colorIndex];
-            body.style.backgroundColor = currentColor.hex;
-            colorDisplay.textContent = `当前颜色：${currentColor.name}`;
-            rgbDisplay.textContent = `RGB: ${currentColor.rgb}`;
-            
-            // 循环切换颜色
-            colorIndex = (colorIndex + 1) % colors.length;
-            flashTimerId = setTimeout(startFlashing, flashInterval);
-        }
+        // 彩色测试按钮 - 跳转到彩色闪烁页面
+        colorTestBtn.addEventListener('click', () => {
+            window.location.href = 'color-flash.html';
+        });
         
-        // 停止闪烁
-        function stopFlashing() {
-            clearTimeout(flashTimerId);
-            body.style.backgroundColor = '#f8f9fa'; // 恢复浅色背景
-            colorDisplay.textContent = "已停止";
-            rgbDisplay.textContent = "";
-            stopBtn.innerHTML = "已停止";
-            stopBtn.disabled = true;
-            stopBtn.style.color = '#6c757d';
-            stopBtn.style.borderColor = '#6c757d';
-        }
+        // 黑白测试按钮 - 跳转到黑白闪烁页面
+        blackWhiteTestBtn.addEventListener('click', () => {
+            window.location.href = 'black-white-flash.html';
+        });
         
-        // 按钮事件 - 高优先级响应
-        stopBtn.addEventListener('click', stopFlashing);
-        
-        // 初始启动测试
-        startFlashing();
+        // 不允许按钮 - 退出
+        denyBtn.addEventListener('click', () => {
+            alert('已取消测试，感谢您的谨慎对待。');
+            window.close();
+        });
     </script>
 </body>
 </html>
