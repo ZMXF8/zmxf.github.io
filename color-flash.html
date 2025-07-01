@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>彩色无限闪烁测试</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", sans-serif;
+            transition: background-color 0ms;
+        }
+        
+        .control-area {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+        
+        .stop-button {
+            background: white;
+            color: #e74c3c;
+            border: 3px solid #e74c3c;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.3), 0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+        
+        .stop-button:hover {
+            background: #f8f9fa;
+            transform: translateX(-50%) translateY(-3px);
+        }
+        
+        .stop-button:active {
+            transform: translateX(-50%) translateY(1px);
+        }
+        
+        .info-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 25px 35px;
+            border-radius: 12px;
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .color-info {
+            font-size: 30px;
+            color: #f1c40f;
+            margin: 15px 0;
+        }
+        
+        .rgb-values {
+            font-size: 14px;
+            color: #95a5a6;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 信息覆盖层 -->
+    <div class="info-overlay">
+        <h2 style="font-size: 22px; margin-bottom: 5px;">彩色无限闪烁测试</h2>
+        <div class="color-info" id="colorDisplay">当前颜色：红色</div>
+        <div class="rgb-values" id="rgbDisplay">RGB: 255, 0, 0</div>
+        <p>⚠️ 重要提示：</p>
+        <p>1. 测试频率：40毫秒（25Hz）无限循环</p>
+        <p>2. 请随时准备点击下方按钮停止</p>
+    </div>
+    
+    <!-- 停止按钮 -->
+    <div class="control-area">
+        <button class="stop-button" id="stopBtn">
+            停止测试
+        </button>
+    </div>
+
+    <script>
+        // 40毫秒切换一次（25Hz）
+        const flashInterval = 40; 
+        // 标准色卡RGB值
+        const colors = [
+            { name: "红色", rgb: "255, 0, 0", hex: "#ff0000" },
+            { name: "绿色", rgb: "0, 255, 0", hex: "#00ff00" },
+            { name: "蓝色", rgb: "0, 0, 255", hex: "#0000ff" }
+        ];
+        let colorIndex = 0;
+        const body = document.body;
+        const colorDisplay = document.getElementById('colorDisplay');
+        const rgbDisplay = document.getElementById('rgbDisplay');
+        const stopBtn = document.getElementById('stopBtn');
+        let flashTimerId;
+        
+        // 启动彩色无限闪烁
+        function startFlashing() {
+            const currentColor = colors[colorIndex];
+            body.style.backgroundColor = currentColor.hex;
+            colorDisplay.textContent = `当前颜色：${currentColor.name}`;
+            rgbDisplay.textContent = `RGB: ${currentColor.rgb}`;
+            
+            colorIndex = (colorIndex + 1) % colors.length;
+            flashTimerId = setTimeout(startFlashing, flashInterval);
+        }
+        
+        // 停止闪烁并返回安全页
+        function stopFlashing() {
+            clearTimeout(flashTimerId);
+            body.style.backgroundColor = '#f8f9fa';
+            colorDisplay.textContent = "测试已停止";
+            rgbDisplay.textContent = "";
+            stopBtn.innerHTML = "返回安全页";
+            
+            stopBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // 初始启动测试
+        startFlashing();
+        stopBtn.addEventListener('click', stopFlashing);
+    </script>
+</body>
+</html>
