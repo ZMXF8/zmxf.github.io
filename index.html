@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>光敏性测试 - 黑白闪烁演示</title>
+    <title>无限黑白闪烁演示</title>
     <style>
         body {
             margin: 0;
@@ -11,44 +11,30 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: "Microsoft YaHei", sans-serif;
-            transition: background-color 0.03s; /* 平滑过渡减少刺激 */
+            font-family: "PingFang SC", sans-serif;
+            transition: background-color 0.05s; /* 轻微过渡减少生硬感 */
         }
         
-        .warning-box {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .control-container {
+        .control-panel {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
         .stop-btn {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 30px;
             font-size: 16px;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             transition: all 0.3s;
         }
         
@@ -57,80 +43,79 @@
             transform: translateY(-2px);
         }
         
-        .info-box {
+        .warning-bar {
             position: fixed;
-            z-index: 100;
-            background: rgba(0,0,0,0.7);
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 51, 51, 0.9);
             color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            max-width: 80%;
+            padding: 10px 0;
             text-align: center;
-            line-height: 1.6;
+            font-size: 14px;
+            z-index: 100;
         }
         
-        /* 响应式调整 */
-        @media (max-width: 480px) {
-            .info-box {
-                padding: 12px 18px;
-                font-size: 14px;
-            }
-            .stop-btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
+        .info-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <!-- 顶部紧急警告 -->
-    <div class="warning-box">
-        ⚠️ 光敏性癫痫警告：本页面包含闪烁效果，可能诱发光敏性癫痫发作，建议立即关闭页面若出现不适！
+    <!-- 顶部警告条 -->
+    <div class="warning-bar">
+        ⚠️ 警告：无限闪烁可能引起视觉疲劳，若出现不适请立即点击下方按钮停止！
     </div>
     
     <!-- 中央信息框 -->
     <div class="info-box">
-        <h2 style="font-size: 20px; margin-bottom: 10px; font-weight: bold;">黑白闪烁测试（15Hz）</h2>
-        <p>当前闪烁频率：15次/秒（医学研究建议安全阈值）</p>
-        <p>⚠️ 注意事项：</p>
-        <p>1. 若出现头晕、恶心、视觉异常或抽搐，请立即点击下方按钮停止并休息</p>
-        <p>2. 光敏性癫痫患者、心脏病患者及孕妇严禁观看</p>
-        <p>3. 建议观看时间不超过15秒</p>
+        <h2 style="font-size: 20px; margin-bottom: 10px;">无限黑白闪烁演示</h2>
+        <p>当前频率：0.5秒切换一次（1Hz）</p>
+        <p>⚠️ 注意：请控制观看时间，避免长时间注视</p>
     </div>
     
     <!-- 控制按钮 -->
-    <div class="control-container">
+    <div class="control-panel">
         <button class="stop-btn" id="stopBtn">停止闪烁</button>
     </div>
 
     <script>
-        // 15赫兹 = 1000毫秒 / 15 ≈ 66.67毫秒切换一次（更适合人眼的频率）
-        const flashInterval = 1000 / 15;
+        const flashInterval = 500; // 0.5秒切换一次
         let isBlack = true;
         const body = document.body;
-        let isFlashing = true;
         const stopBtn = document.getElementById('stopBtn');
+        let flashTimerId;
         
-        // 闪烁控制函数
-        const flash = () => {
-            if (isFlashing) {
-                body.style.backgroundColor = isBlack ? '#000' : '#fff';
-                isBlack = !isBlack;
-                requestAnimationFrame(flash);
-            }
-        };
+        // 启动闪烁
+        function startFlashing() {
+            body.style.backgroundColor = isBlack ? '#000' : '#fff';
+            isBlack = !isBlack;
+            flashTimerId = setTimeout(startFlashing, flashInterval);
+        }
         
-        // 停止按钮事件
-        stopBtn.addEventListener('click', () => {
-            isFlashing = false;
-            body.style.backgroundColor = '#f5f5f5'; // 恢复为浅灰色背景
+        // 停止闪烁
+        function stopFlashing() {
+            clearTimeout(flashTimerId);
+            body.style.backgroundColor = '#f5f5f5'; // 恢复浅灰色背景
             stopBtn.innerHTML = '已停止';
             stopBtn.disabled = true;
             stopBtn.style.backgroundColor = '#95a5a6';
-        });
+        }
         
-        // 启动闪烁
-        flash();
+        // 按钮事件
+        stopBtn.addEventListener('click', stopFlashing);
+        
+        // 初始启动闪烁
+        startFlashing();
     </script>
 </body>
 </html>
