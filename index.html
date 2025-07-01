@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>闪烁测试 - 安全确认</title>
+    <title>闪烁测试 - 安全警告</title>
     <style>
         body {
             margin: 0;
@@ -46,11 +46,11 @@
             font-size: 15px;
         }
         
-        .test-type-buttons {
+        .test-buttons {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         
         .btn {
@@ -84,41 +84,28 @@
         .btn-bw:hover {
             background: #1a1a1a;
         }
-        
-        .btn-deny {
-            background: #ecf0f1;
-            color: #333;
-            margin-top: 15px;
-        }
-        
-        .btn-deny:hover {
-            background: #dfe6e9;
-        }
     </style>
 </head>
 <body>
     <div class="warning-card">
-        <div class="card-header">⚠️ 无限闪烁测试警告</div>
+        <div class="card-header">⚠️ 高危闪烁测试警告</div>
         <div class="card-body">
             <p class="warning-text">
-                您即将进行无限闪烁测试，请注意：<br><br>
-                ▪ 无限闪烁可能诱发严重光敏反应或视觉疲劳<br>
-                ▪ 癫痫患者、心脏病患者及孕妇严禁测试<br>
-                ▪ 测试过程中若感不适，请立即点击停止按钮<br><br>
-                请确保您已了解全部风险，并在安全环境下操作。
+                本测试包含高频无限闪烁，可能诱发光敏性反应：<br>
+                ▪ 癫痫患者/心脏病患者/孕妇严禁使用<br>
+                ▪ 测试中若头晕/恶心请立即点击停止<br>
+                ▪ 每次测试建议不超过10秒
             </p>
-            <div class="test-type-buttons">
-                <button class="btn btn-color" id="colorTestBtn">彩色（红、绿、蓝）无限测试</button>
-                <button class="btn btn-bw" id="blackWhiteTestBtn">黑白无限测试</button>
+            <div class="test-buttons">
+                <button class="btn btn-color" id="colorTestBtn">彩色（红/绿/蓝）测试</button>
+                <button class="btn btn-bw" id="blackWhiteTestBtn">黑白测试</button>
             </div>
-            <button class="btn btn-deny" id="denyBtn">不允许，退出</button>
         </div>
     </div>
 
     <script>
         const colorTestBtn = document.getElementById('colorTestBtn');
         const blackWhiteTestBtn = document.getElementById('blackWhiteTestBtn');
-        const denyBtn = document.getElementById('denyBtn');
         
         // 彩色测试按钮 - 跳转到彩色闪烁页面
         colorTestBtn.addEventListener('click', () => {
@@ -128,12 +115,6 @@
         // 黑白测试按钮 - 跳转到黑白闪烁页面
         blackWhiteTestBtn.addEventListener('click', () => {
             window.location.href = 'black-white-flash.html';
-        });
-        
-        // 不允许按钮 - 退出
-        denyBtn.addEventListener('click', () => {
-            alert('已取消测试，感谢您的谨慎对待。');
-            window.close();
         });
     </script>
 </body>
