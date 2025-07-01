@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>黑白无限闪烁测试</title>
+    <title>黑白闪烁测试</title>
     <style>
         body {
             margin: 0;
@@ -11,107 +11,97 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            font-family: "Microsoft YaHei", sans-serif;
             transition: background-color 0ms;
         }
         
-        .control-area {
+        .top-control {
             position: fixed;
-            bottom: 40px;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .exit-btn {
+            background: rgba(255,255,255,0.8);
+            color: #e74c3c;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .exit-btn:hover {
+            background: white;
+        }
+        
+        .stop-btn {
+            position: fixed;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 1000;
-        }
-        
-        .stop-button {
-            background: white;
+            background: rgba(255,255,255,0.8);
             color: #e74c3c;
-            border: 3px solid #e74c3c;
-            padding: 18px 50px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
+            border: none;
+            padding: 10px 30px;
+            font-size: 16px;
+            border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.3), 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-        }
-        
-        .stop-button:hover {
-            background: #f8f9fa;
-            transform: translateX(-50%) translateY(-3px);
-        }
-        
-        .stop-button:active {
-            transform: translateX(-50%) translateY(1px);
-        }
-        
-        .info-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 25px 35px;
-            border-radius: 12px;
-            text-align: center;
             z-index: 1000;
         }
         
-        .color-info {
-            font-size: 30px;
-            color: #f1c40f;
-            margin: 15px 0;
+        .stop-btn:hover {
+            background: white;
         }
     </style>
 </head>
 <body>
-    <!-- 信息覆盖层 -->
-    <div class="info-overlay">
-        <h2 style="font-size: 22px; margin-bottom: 5px;">黑白无限闪烁测试</h2>
-        <div class="color-info" id="colorDisplay">当前颜色：黑色</div>
-        <p>⚠️ 重要提示：</p>
-        <p>1. 测试频率：40毫秒（25Hz）无限循环</p>
-        <p>2. 请随时准备点击下方按钮停止</p>
+    <!-- 顶部退出按钮 -->
+    <div class="top-control">
+        <button class="exit-btn" id="exitBtn">×</button>
     </div>
     
-    <!-- 停止按钮 -->
-    <div class="control-area">
-        <button class="stop-button" id="stopBtn">
-            停止测试
-        </button>
-    </div>
+    <!-- 底部停止按钮 -->
+    <button class="stop-btn" id="stopBtn">停止闪烁</button>
 
     <script>
         // 40毫秒切换一次（25Hz）
         const flashInterval = 40; 
         let isBlack = true;
         const body = document.body;
-        const colorDisplay = document.getElementById('colorDisplay');
+        const exitBtn = document.getElementById('exitBtn');
         const stopBtn = document.getElementById('stopBtn');
         let flashTimerId;
         
-        // 启动黑白无限闪烁
+        // 启动黑白闪烁
         function startFlashing() {
             body.style.backgroundColor = isBlack ? '#000' : '#fff';
-            colorDisplay.textContent = `当前颜色：${isBlack ? '黑色' : '白色'}`;
             isBlack = !isBlack;
             flashTimerId = setTimeout(startFlashing, flashInterval);
         }
         
-        // 停止闪烁并返回安全页
+        // 停止闪烁
         function stopFlashing() {
             clearTimeout(flashTimerId);
             body.style.backgroundColor = '#f8f9fa';
-            colorDisplay.textContent = "测试已停止";
-            stopBtn.innerHTML = "返回安全页";
-            
+            stopBtn.textContent = "返回首页";
             stopBtn.addEventListener('click', () => {
                 window.location.href = 'index.html';
             });
         }
         
-        // 初始启动测试
+        // 退出到首页
+        exitBtn.addEventListener('click', () => {
+            clearTimeout(flashTimerId);
+            window.location.href = 'index.html';
+        });
+        
+        // 初始启动
         startFlashing();
         stopBtn.addEventListener('click', stopFlashing);
     </script>
